@@ -1,0 +1,10 @@
+/Users/wiselin/Projects/StressApplication/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.deps.json
+/Users/wiselin/Projects/StressApplication/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.runtimeconfig.json
+/Users/wiselin/Projects/StressApplication/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.runtimeconfig.dev.json
+/Users/wiselin/Projects/StressApplication/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.dll
+/Users/wiselin/Projects/StressApplication/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.pdb
+/Users/wiselin/Projects/StressApplication/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.csproj.CoreCompileInputs.cache
+/Users/wiselin/Projects/StressApplication/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.AssemblyInfoInputs.cache
+/Users/wiselin/Projects/StressApplication/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.AssemblyInfo.cs
+/Users/wiselin/Projects/StressApplication/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.dll
+/Users/wiselin/Projects/StressApplication/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.pdb
