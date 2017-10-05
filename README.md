@@ -31,3 +31,7 @@ If you haven't install dotnet in Mac please follow the steps as below:
 
   3. enter
   dotnet StressApplication.dll
+
+
+#About the settings
+You can edit the appsettings.json to set the default settings.
