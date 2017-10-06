@@ -1,6 +1,7 @@
 # Dotnet-simulate-chrome-Stress-Test-on-Mac
-#Chromedriver
-#Selenium
+#Chromedriver\n
+#Selenium\n
+#Csharp\n
 
 Using c# to simulate chrome browser to do stress test in Mac
 
