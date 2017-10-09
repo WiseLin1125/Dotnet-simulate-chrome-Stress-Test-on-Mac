@@ -13,7 +13,6 @@
 /Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.runtimeconfig.dev.json
 /Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.dll
 /Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/bin/Debug/netcoreapp2.0/StressApplication.pdb
-/Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.csprojResolveAssemblyReference.cache
 /Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.csproj.CoreCompileInputs.cache
 /Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.AssemblyInfoInputs.cache
 /Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/obj/Debug/netcoreapp2.0/StressApplication.AssemblyInfo.cs
