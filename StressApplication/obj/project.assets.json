@@ -3869,13 +3869,13 @@
       "projectName": "StressApplication",
       "projectPath": "/Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/StressApplication.csproj",
       "packagesPath": "/Users/wiselin/.nuget/packages/",
-      "outputPath": "/Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/obj/",
+      "outputPath": "/Users/wiselin/Dotnet-simulate-chrome-Stress-Test-on-Mac/StressApplication/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/wiselin/.nuget/NuGet/NuGet.Config"
+        "/Users/wiselin/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -3898,8 +3898,9 @@
       "netcoreapp2.0": {
         "dependencies": {
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
-            "version": "2.0.0",
+            "version": "2.0",
             "autoReferenced": true
           },
           "Selenium.WebDriver": {

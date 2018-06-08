@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{5DCA8BD0-C3E6-478A-B4FA-379D44CB69CB}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="StressApplication/Program.cs">
+    <Files>
+      <File FileName="StressApplication/Program.cs" Line="33" Column="64" />
+      <File FileName="StressApplication/appsettings.json" Line="8" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.StressApplication PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="StressApplication/Program.cs" line="60" offsetX="361" offsetY="885" expression="driver" liveUpdate="False" />
+    <Watch file="StressApplication/Program.cs" line="113" offsetX="494" offsetY="1680" expression="ex" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+  <MultiItemStartupConfigurations>
+    <MultiItemSolutionRunConfiguration Id="Default" Name="Default">
+      <Items>
+        <StartupItem ItemId="{5DCA8BD0-C3E6-478A-B4FA-379D44CB69CB}" ItemName="StressApplication" ConfigurationId="Default" />
+      </Items>
+    </MultiItemSolutionRunConfiguration>
+  </MultiItemStartupConfigurations>
+</Properties>
