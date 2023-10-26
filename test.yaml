@@ -1,0 +1,3943 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This template deploys Windows Server Failover Clustering (WSFC) and SQL Server AlwaysOn Availability Group nodes. This template may also deploy the require AD architecture outlined in \"Implementing Active Directory Domain Services in the AWS Cloud\" **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "Network Configuration"
+                    },
+                    "Parameters": [
+                        "AvailabilityZones",
+                        "VPCName",
+                        "VPCCIDR",
+                        "VPCID",
+                        "PublicSubnet1CIDR",
+                        "PublicSubnet1ID",
+                        "PrivateSubnetCIDRs",
+                        "PrivateSubnetAssignment",
+                        "PrivateSubnetIDs",
+                        "PrivateSubnet1RouteTable",
+                        "PrivateSubnet2RouteTable",
+                        "NumberOfSubnets"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Amazon EC2 Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Standard Active Directory Configuration"
+                    },
+                    "Parameters": [
+                        "ADScenarioType",
+                        "DomainDNSName",
+                        "DomainAdminPasswordKey",
+                        "DomainAdminSecretName",
+                        "WSFClusterName",
+                        "CreateNewAD",
+                        "ADServersPrivateIP",
+                        "MADDirectoryID"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Self-Managed Active Directory Configuration (for non-AWS Directory Service architecture)"
+                    },
+                    "Parameters": [
+                        "DomainAdminUser"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Remote Desktop Gateway Configuration"
+                    },
+                    "Parameters": [
+                        "CreateRDGWNode",
+                        "RDGWAccess",
+                        "NodeAccessTypes",
+                        "NumberOfNodes",
+                        "RDGWInstanceType",
+                        "RDGWName",
+                        "IsRDGWAccessUsingCIDR"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Microsoft SQL Server Configuration"
+                    },
+                    "Parameters": [
+                        "SQLScenarioType",
+                        "SQLAMIID",
+                        "SQLServiceAccount",
+                        "SQLServiceAccountPasswordKey",
+                        "SQLServiceAccountSecret",
+                        "BYOLAMI",
+                        "VersionsRange",
+                        "VolumeSizes",
+                        "VolumeType",
+                        "VolumeIopsValues",
+                        "DeviceNames",
+                        "DriveLetters",
+                        "DriveTypes",
+                        "DHIDS",
+                        "HRGID",
+                        "SQLSvmName",
+                        "SqlDataLunSize",
+                        "SqlLogLunSize",
+                        "VolumeStorage",
+                        "TempDBonInstanceStore"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Failover Cluster Configuration"
+                    },
+                    "Parameters": [
+                        "WSFCNodeInstanceType",
+                        "NodeNetBIOSNames"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "FSX Configuration"
+                    },
+                    "Parameters": [
+                        "SqlFSxFCIName",
+                        "FileShareVolumeSize",
+                        "FileShareThroughputCapacity",
+                        "FSXDomainMemberSGID"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "AWS Launch Wizard Configuration"
+                    },
+                    "Parameters": [
+                        "AssetsBucketName",
+                        "AssetsS3KeyPrefix",
+                        "MSSQLMediaBucketName",
+                        "MSSQLMediaPathKey"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Resources' tags"
+                    },
+                    "Parameters": [
+                        "GeneralTagPairs",
+                        "NumberOfGeneralTags",
+                        "VPCTagPairs",
+                        "NumberOfVPCTags",
+                        "SubnetTagPairs",
+                        "NumberOfSubnetTags",
+                        "RDGWTagPairs",
+                        "NumberOfRDGWTags",
+                        "SQLNodeTagPairs",
+                        "NumberOfSQLNodeTags",
+                        "VolumeTagPairs",
+                        "NumberOfVolumeTags"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "ApplicationName": {
+                    "default": "Application Name"
+                },
+                "Ec2RoleName": {
+                    "default": ""
+                },
+                "UniqueID": {
+                    "default": "Unique ID for Launch Wizard resource group"
+                },
+                "CreateNewAD": {
+                    "default": "Create New AD in your vpc"
+                },
+                "ADScenarioType": {
+                    "default": "AD Scenario Type"
+                },
+                "SQLScenarioType": {
+                    "default": "SQL Scenario Type"
+                },
+                "ADServersPrivateIP": {
+                    "default": "Domain Controllers Private IP Address"
+                },
+                "AvailabilityZones": {
+                    "default": "Availability Zones"
+                },
+                "DomainAdminPasswordKey": {
+                    "default": "SSM Parameter Key of Domain Admin Password"
+                },
+                "DomainAdminSecretName": {
+                    "default": "Secrets Manager Secret Name for FCI of Domain Admin Password"
+                },
+                "DomainAdminUser": {
+                    "default": "Domain Admin User Name"
+                },
+                "MADDirectoryID": {
+                    "default": "Directory ID of the managed AD instance for FCI"
+                },
+                "DomainDNSName": {
+                    "default": "Domain DNS Name"
+                },
+                "WSFClusterName": {
+                    "default": "WSFC cluster name"
+                },
+                "KeyPairName": {
+                    "default": "Key Pair Name"
+                },
+                "NumberOfNodes": {
+                    "default": "Number of SQLServer Nodes"
+                },
+                "NumberOfSubnets": {
+                    "default": "Number of Subnets"
+                },
+                "PrivateSubnetCIDRs": {
+                    "default": "Private Subnet CIDRs"
+                },
+                "PrivateSubnetAssignment": {
+                    "default": "Assign Private Subnet IDs"
+                },
+                "PrivateSubnetIDs": {
+                    "default": "IDs for All Private Subnets"
+                },
+                "PublicSubnet1CIDR": {
+                    "default": "Public Subnet 1 CIDR"
+                },
+                "PublicSubnet1ID": {
+                    "default": "Public Subnet 1 ID"
+                },
+                "AssetsBucketName": {
+                    "default": "Launch Wizard S3 Bucket Name"
+                },
+                "AssetsS3KeyPrefix": {
+                    "default": "Launch Wizard S3 Key Prefix"
+                },
+                "RDGWInstanceType": {
+                    "default": "Remote Desktop Gateway Instance Type"
+                },
+                "CreateRDGWNode": {
+                    "default": "If RDGW should be created in case of Single Node Scenario. **NOTE** For HA Scenarios, RDGW must always be created"
+                },
+                "RDGWAccess": {
+                    "default": "Allowed Remote Desktop Gateway External Access CIDR or Security Group"
+                },
+                "NodeAccessTypes": {
+                    "default": "SQL Nodes' SQL Server Access Types"
+                },
+                "RDGWName": {
+                    "default": "Name your RDGW instance"
+                },
+                "SQLAMIID": {
+                    "default": "SQL Server Version"
+                },
+                "SQLServiceAccount": {
+                    "default": "Service Account Name"
+                },
+                "SQLServiceAccountPasswordKey": {
+                    "default": "SSM Parameter Store Key of Service Account Password"
+                },
+                "SQLServiceAccountSecret": {
+                    "default": "Secrets Manager Secret for of Service Account Password"
+                },
+                "VolumeSizes": {
+                    "default": "SQL Server Volume Sizes"
+                },
+                "VolumeType": {
+                    "default": "SQL Server Volume Type"
+                },
+                "DriveLetters": {
+                    "default": "Drive letters that customers specified"
+                },
+                "DriveTypes": {
+                    "default": "Drive types that customers specified"
+                },
+                "DeviceNames": {
+                    "default": "Name of devices"
+                },
+                "FileShareThroughputCapacity": {
+                    "default": "Drive letters that customers specified"
+                },
+                "FileShareVolumeSize": {
+                    "default": "FCI share volume size"
+                },
+                "FSXDomainMemberSGID": {
+                    "default": "Domain Member security group ID for FSX"
+                },
+                "SqlFSxFCIName": {
+                    "default": "SQL FCI Name"
+                },
+                "VPCName": {
+                    "default": "Name your VPC"
+                },
+                "VPCCIDR": {
+                    "default": "VPC CIDR"
+                },
+                "VPCID": {
+                    "default": "VPC ID"
+                },
+                "WSFCNodeInstanceType": {
+                    "default": "Instance Type for Cluster Nodes"
+                },
+                "NodeNetBIOSNames": {
+                    "default": "Cluster Nodes NetBIOS Names"
+                },
+                "GeneralTagPairs": {
+                    "default": "general tag pairs for all Launch Wizard resources"
+                },
+                "NumberOfGeneralTags": {
+                    "default": "Number of General Tags"
+                },
+                "VPCTagPairs": {
+                    "default": "tag pairs for VPC"
+                },
+                "NumberOfVPCTags": {
+                    "default": "Number Of VPC's Tags"
+                },
+                "SubnetTagPairs": {
+                    "default": "tag pairs for Subnet"
+                },
+                "NumberOfSubnetTags": {
+                    "default": "Number Of Subnet's Tags"
+                },
+                "RDGWTagPairs": {
+                    "default": "tag pairs for RDGW"
+                },
+                "NumberOfRDGWTags": {
+                    "default": "Number Of RDGW's Tags"
+                },
+                "SQLNodeTagPairs": {
+                    "default": "tag pairs for SQLNode"
+                },
+                "NumberOfSQLNodeTags": {
+                    "default": "Number Of SQLNode's Tags"
+                },
+                "VolumeTagPairs": {
+                    "default": "tag pairs for Volume"
+                },
+                "NumberOfVolumeTags": {
+                    "default": "Number Of Volume's Tags"
+                },
+                "BYOLAMI": {
+                    "default": "Bring Your Own License AMI?"
+                },
+                "VersionsRange": {
+                    "default": "Range of OS version range followed by sql versions"
+                },
+                "DHIDS": {
+                    "default": "Dedicated host Ids to deploy instances"
+                },
+                "HRGID": {
+                    "default": "Host Resource Group Id in which to deploy instances"
+                },
+                "PrivateSubnet1RouteTable": {
+                    "default": "Route table ids of the private subnet 1 for SQL nodes"
+                },
+                "PrivateSubnet2RouteTable": {
+                    "default": "Route table ids of the private subnet 2 for SQL nodes"
+                },
+                "SQLSvmName": {
+                    "default": "Sql Servger Virtual Machine name for ONTAP"
+                },
+                "SqlDataLunSize": {
+                    "default": "Sql Server Data LUN size ONTAP"
+                },
+                "SqlLogLunSize": {
+                    "default": "Sql Server log LUN size for ONTAP"
+                },
+                "VolumeStorage": {
+                    "default": "Sql Server volume size for ONTAP"
+                },
+                "TempDBonInstanceStore": {
+                    "default": "Place Temp DB on local Instance store"
+                }
+            }
+        }
+    },
+    "Parameters": {
+        "ApplicationName": {
+            "Default": "LaunchWizard",
+            "Description": "Application Name",
+            "Type": "String"
+        },
+        "Ec2RoleName": {
+            "Default": "",
+            "Description": "EC2 instance role name",
+            "Type": "String"
+        },
+        "UniqueID": {
+            "Default": "UID123",
+            "Description": "Automation Execution Unique ID.",
+            "Type": "String"
+        },
+        "LogGroupName": {
+            "Default": "",
+            "Description": "A name for the log group",
+            "Type": "String"
+        },
+        "VPCName": {
+            "Default": "",
+            "Description": "Name your VPC",
+            "Type": "String"
+        },
+        "CreateNewAD": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "true",
+            "Description": "Create a New AD in your VPC with domian Admin user",
+            "Type": "String"
+        },
+        "ADScenarioType": {
+            "AllowedValues": [
+                "AWS_MANAGED_AD",
+                "MICROSOFT_AD_ON_EC2"
+            ],
+            "Default": "AWS_MANAGED_AD",
+            "Description": "Select the type of AD DS deployment to use: AWS Directory Service for Microsoft AD or managing your own Amazon EC2 AD instances.",
+            "Type": "String"
+        },
+        "SQLScenarioType": {
+            "Default": "",
+            "Description": "Select .",
+            "Type": "String"
+        },
+        "ADServersPrivateIP": {
+            "Default": "",
+            "Description": "Fixed private IPs for the Active Directory servers",
+            "Type": "String"
+        },
+        "AvailabilityZones": {
+            "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and that 2 AZ's must be provided unless the Third AZ parameter is specified, in which case 3 AZ's must me provided.",
+            "Type": "String"
+        },
+        "DomainAdminPasswordKey": {
+            "Description": "SSM Parameter Store Key of Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
+            "Type": "String",
+            "Default": ""
+        },
+        "DomainAdminSecretName": {
+            "Description": "Secrets Manager Secret Name for FCI for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
+            "Type": "String",
+            "Default": ""
+        },
+        "DomainAdminUser": {
+            "AllowedPattern": "([a-zA-Z0-9]+(\\.|_|-|@)*)+",
+            "Default": "admin",
+            "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account. Note: This user will always default to \"Admin\" when using AWS Directory Service regardless of the value provided.",
+            "MaxLength": "20",
+            "MinLength": "5",
+            "Type": "String"
+        },
+        "DomainDNSName": {
+            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
+            "Default": "example.com",
+            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
+            "MaxLength": "255",
+            "MinLength": "2",
+            "Type": "String"
+        },
+        "MADDirectoryID": {
+            "Default": "",
+            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
+            "Type": "String"
+        },
+        "FSXDomainMemberSGID": {
+            "Default": "",
+            "Description": "Security group ID of the members group for existing AD",
+            "Type": "String"
+        },
+        "WSFClusterName": {
+            "AllowedPattern": "[a-zA-Z0-9\\-]+",
+            "Default": "WSFCluster1",
+            "Description": "Name which will be created as Cluster for WSFC ndoes in AD",
+            "MaxLength": "15",
+            "MinLength": "4",
+            "Type": "String"
+        },
+        "KeyPairName": {
+            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "NumberOfNodes": {
+            "AllowedValues": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8"
+            ],
+            "Default": "2",
+            "Description": "Enter the number of SQLServer nodes to create",
+            "Type": "String"
+        },
+        "NumberOfSubnets": {
+            "AllowedValues": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8"
+            ],
+            "Default": "2",
+            "Description": "Enter the number of Subnets to create",
+            "Type": "String"
+        },
+        "PrivateSubnetCIDRs": {
+            "Default": "10.0.0.0/20,10.0.16.0/20,10.0.32.0/20,10.0.48.0/20,10.0.64.0/20,10.0.80.0/20,10.0.96.0/20,10.0.112.0/20",
+            "Description": "CIDR Block for private subnets.",
+            "Type": "String"
+        },
+        "PrivateSubnetAssignment": {
+            "Default": "",
+            "Description": "Assign ID for private subnets.",
+            "Type": "String"
+        },
+        "PrivateSubnetIDs": {
+            "Default": "",
+            "Description": "(Optional) ID for private subnets.",
+            "Type": "String"
+        },
+        "PublicSubnet1CIDR": {
+            "Default": "10.0.128.0/20",
+            "Description": "CIDR Block for the public DMZ subnet 1 located in Availability Zone 1",
+            "Type": "String"
+        },
+        "PublicSubnet1ID": {
+            "Description": "(Optional) ID for public subnet 1 located in Availability Zone 1.",
+            "Type": "String"
+        },
+        "PrivateSubnet1RouteTable": {
+            "Description": "Route table IDS' for both subnets for ONTAP.",
+            "Type": "String",
+            "Default":""
+        },
+        "PrivateSubnet2RouteTable": {
+            "Description": "Route table IDS' for both subnets for ONTAP.",
+            "Type": "String",
+            "Default": ""
+        },
+        "AssetsBucketName": {
+            "ConstraintDescription": "Launch Wizard bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Default": "launchwizard-sqlha-templates",
+            "Description": "S3 bucket name for the Launch Wizard assets. Launch Wizard bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Type": "String"
+        },
+        "AssetsS3RegionCode": {
+            "Default": "s3.us-east-1",
+            "Description": "S3 region code.",
+            "Type": "String"
+        },
+        "AssetsS3KeyPrefix": {
+            "Description": "S3 key prefix for the Launch Wizard assets. Launch Wizard key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
+            "Type": "String"
+        },
+        "MSSQLMediaBucketName": {
+            "Default": "LaunchWizard-sqlha",
+            "Description": "S3 bucket name for the Launch Wizard assets. Launch Wizard bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Type": "String"
+        },
+        "MSSQLMediaPathKey": {
+            "Description": "S3 key prefix for the media for SQL Server for FCI. Launch Wizard key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
+            "Type": "String",
+            "Default": "launchwizardscripts/sqlmedia/sqlserver.iso"
+        },
+        "RDGWInstanceType": {
+            "Default": "m5.large",
+            "Description": "Amazon EC2 instance type for the Remote Desktop Gateway instances",
+            "Type": "String"
+        },
+        "NodeAccessTypes" : {
+            "Default": "SyncMode,SyncMode,SyncMode,ReadOnlyMode,ReadOnlyMode,ReadOnlyMode,ReadOnlyMode,ReadOnlyMode",
+            "Description": "SQLHA can have up to 3 SyncMode nodes and 5 ReadOnlyMode nodes",
+            "Type": "String"
+        },
+        "CreateRDGWNode": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "true",
+            "Description": "Should RDGW node be created in case of sql single node scenario. Note, in HA RDGW must always be created",
+            "Type": "String"
+        },
+        "RDGWAccess": {
+            "AllowedPattern": "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))|sg-(\\w+)){1}$|^$",
+            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/x, security group as sg-xxxxxxxxxxxx or empty",
+            "Description": "Allowed CIDR Block or security group for external access to the Remote Desktop Gateways",
+            "Type": "String",
+            "Default": ""
+        },
+        "IsRDGWAccessUsingCIDR": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "true",
+            "Description": "Is RDGW access using CIDR",
+            "Type": "String"
+        },
+        "RDGWName": {
+            "Default" : "LaunchWizard-RDGW",
+            "Description": "Name your RDGW instance",
+            "Type": "String",
+            "MaxLength": "64",
+            "MinLength": "1"
+        },
+        "SQLAMIID": {
+            "Description": "Version of SQL Windows AMI ID",
+            "Type": "String"
+        },
+        "SQLServiceAccount": {
+            "AllowedPattern": "([a-zA-Z0-9]+(\\.|_|-|@)*)+",
+            "Default": "sqlsa",
+            "Description": "User name for the SQL Server Service Account. This Account is a Domain User.",
+            "MaxLength": "20",
+            "MinLength": "5",
+            "Type": "String"
+        },
+        "SQLServiceAccountPasswordKey": {
+            "Description": "SSM Parameter Store Key of Password for the SQL Service account. Must be at least 8 characters containing letters, numbers and symbols",
+            "Type": "String",
+            "Default": ""
+        },
+        "SQLServiceAccountSecret": {
+            "Description": "Secrets Manager name of Password for the SQL Service account. Must be at least 8 characters containing letters, numbers and symbols",
+            "Type": "String",
+            "Default": ""
+        },
+        "VolumeSizes": {
+            "Default": "100,500,500,500",
+            "Description": "Volume sizes for the SQL Data, Logs and TempDb volumes, in GiB",
+            "Type": "String"
+        },
+        "VolumeType": {
+            "AllowedValues": [
+                "gp2",
+                "io1",
+                "st1",
+                "sc1",
+                "io2",
+                "gp3"
+            ],
+            "Default": "gp2",
+            "Description": "Volume type for the SQL Data, Logs and TempDb volumes",
+            "Type": "String"
+        },
+        "VolumeIopsValues": {
+            "Default": "5000,5000,5000,5000",
+            "Description": "Default provisioned IOPs for the Root Drive, SQL Data, Logs and TempDb (for io1 volumes)",
+            "Type": "String"
+        },
+        "SqlFSxFCIName": {
+            "Default": "",
+            "Description": "FCI name",
+            "Type": "String"
+        },
+        "FileShareVolumeSize": {
+            "Default": "32",
+            "Description": "Capacity of the volume used to store SQL Server files. Minimum value is 32 and maximum 65536. (GB)",
+            "Type": "String"
+        },
+        "FileShareThroughputCapacity": {
+            "Default": "8",
+            "Description": "File share throughput capacity, in 2 to the n'th power increments, where 3 <= n <= 11, i.e. (between 2^3 and 2^11).",
+            "Type": "String"
+        },
+        "DeviceNames": {
+            "Default": "/dev/xvdc,/dev/xvdd,/dev/xvde,/dev/xvdk",
+            "Description": "Names of existing devices on AMI",
+            "Type": "String"
+        },
+        "DriveLetters": {
+            "Default": "C,D,E,F",
+            "Description": "Drive letters which could be C, D, E, F",
+            "Type": "String"
+        },
+        "DriveTypes": {
+            "Default": "sql-server,data,logs,backup",
+            "Description": "Drive types which could be sql, logs, data, backup",
+            "Type": "String"
+        },
+        "VPCCIDR": {
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
+            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
+            "Default": "10.0.0.0/16",
+            "Description": "CIDR Block for the VPC",
+            "Type": "String"
+        },
+        "VPCID": {
+            "Description": "(Optional) ID of the VPC",
+            "Type": "String"
+        },
+        "WSFCNodeInstanceType": {
+            "Default": "r5.2xlarge",
+            "Description": "Amazon EC2 instance type for the WSFC Nodes",
+            "Type": "String"
+        },
+        "NodeNetBIOSNames": {
+            "Type": "String",
+            "Description": "NetBIOS name of Nodes (each one up to 15 characters)",
+            "Default": "WSFCNode1,WSFCNode2,WSFCNode3,WSFCNode4,WSFCNode5,WSFCNode6,WSFCNode7,WSFCNode8"
+        },
+        "GeneralTagPairs": {
+            "Type": "CommaDelimitedList",
+            "Description": "Tag Key and Value pairs of General resources",
+            "Default": ""
+        },
+        "NumberOfGeneralTags": {
+            "Default": "0",
+            "AllowedValues": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "Description": "Number of General tags",
+            "Type": "String"
+        },
+        "VPCTagPairs": {
+            "Type": "String",
+            "Description": "Tag Key and Value pairs of VPC",
+            "Default": ""
+        },
+        "NumberOfVPCTags": {
+            "Default": "0",
+            "AllowedValues": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "Description": "Number of VPC tags",
+            "Type": "String"
+        },
+        "SubnetTagPairs": {
+            "Type": "String",
+            "Description": "Tag Key and Value pairs of Subnet",
+            "Default": ""
+        },
+        "NumberOfSubnetTags": {
+            "Default": "0",
+            "AllowedValues": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "Description": "Number of Subnet tags",
+            "Type": "String"
+        },
+        "RDGWTagPairs": {
+            "Type": "String",
+            "Description": "Tag Key and Value pairs of RDGW",
+            "Default": ""
+        },
+        "NumberOfRDGWTags": {
+            "Default": "0",
+            "AllowedValues": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "Description": "Number of RDGW tags",
+            "Type": "String"
+        },
+        "SQLNodeTagPairs": {
+            "Type": "String",
+            "Description": "Tag Key and Value pairs of SQLNode",
+            "Default": ""
+        },
+        "NumberOfSQLNodeTags": {
+            "Default": "0",
+            "AllowedValues": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "Description": "Number of SQLNode tags",
+            "Type": "String"
+        },
+        "VolumeTagPairs": {
+            "Type": "CommaDelimitedList",
+            "Description": "Tag Key and Value pairs of Volume",
+            "Default": ""
+        },
+        "NumberOfVolumeTags": {
+            "Default": "0",
+            "AllowedValues": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "Description": "Number of Volume tags",
+            "Type": "String"
+        },
+        "BYOLAMI": {
+            "Type": "String",
+            "Description": "Bring Your Own License AMI?",
+            "Default": "false"
+        },
+        "VersionsRange": {
+            "Type": "String",
+            "Description": "Range of OS version range followed by sql versions",
+            "Default": "6.3,10.0,12,16"
+        },
+        "FSWParameters": {
+            "Type": "String",
+            "Description": "FSW node name, private subnet, instance type",
+            "Default": ""
+        },
+        "DHIDS": {
+            "Type": "String",
+            "Description": "Dedicated Host Ids to deploy instances",
+            "Default": ""
+        },
+        "HRGID": {
+            "Type": "String",
+            "Description": "Host Resource Group Id in which to deploy instances",
+            "Default": ""
+        },
+        "AGName": {
+            "Type": "String",
+            "Default": "AG1",
+            "Description": "Availability Group Name"
+        },
+        "DatabaseName": {
+            "Type": "String",
+            "Default": "DBtest",
+            "Description": "Database Name"
+        },
+        "SubnetMasks": {
+            "Default": "255.255.240.0,255.255.240.0,255.255.240.0",
+            "Type": "String"
+        },
+        "AGListenerName": {
+            "Type": "String",
+            "Default": "agListener",
+            "Description": "Availability Group Listener Name"
+        },
+        "EnableAppInsights": {
+            "Type": "String",
+            "Default": "false",
+            "Description": "If Enable AppInsight",
+            "AllowedValues": [
+                "true",
+                "false"
+            ]
+        },
+        "ResourceGroupName": {
+            "Type": "String",
+            "Default": "LaunchWizard-AppName",
+            "Description": "Application Resource Group Name"
+        },
+        "SQLSvmName": {
+            "Type": "String",
+            "Default": "sql-svm01",
+            "Description": "SQL Storage Virtual Machine Name"
+        },
+        "SqlDataLunSize": {
+            "Type": "String",
+            "Default": "400G",
+            "Description": "Lun size for SQL Data"
+        },
+        "SqlLogLunSize": {
+            "Type": "String",
+            "Default": "100G",
+            "Description": "Lun size for SQL Log"
+        },
+        "VolumeStorage": {
+            "Type": "String",
+            "Default": "",
+            "Description": "volume size for SQL volume"
+        },
+        "TempDBonInstanceStore": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "false",
+            "Description": "Place TempDB on instace Store",
+            "Type": "String"
+        }
+    },
+    "Conditions": {
+        "NewVPC": {
+            "Fn::Equals": [
+                {
+                    "Ref": "VPCID"
+                },
+                ""
+            ]
+        },
+        "ExistingVPC": {
+            "Fn::Not": [
+                {
+                    "Condition": "NewVPC"
+                }
+            ]
+        },
+        "SQLFCIScenario": {
+            "Fn::Equals": [
+                {
+                    "Ref": "SQLScenarioType"
+                },
+                "SQLHAWindowsFCI"
+            ]
+        },
+        "SQLONTAPScenario": {
+                "Fn::Equals": [
+                    {
+                        "Ref": "SQLScenarioType"
+                    },
+                        "SQLHAFCIONTAP"
+                ]
+            },
+        "NewAD": {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "CreateNewAD"
+                        },
+                        "true"
+                    ]
+        },
+        "ShouldCreateRDGWNode": {
+            "Fn::Equals": [
+                    {
+                        "Ref": "CreateRDGWNode"
+                    },
+                    "true"
+                ]
+        },
+        "UseAWSDirectoryServiceEE": {
+            "Fn::Equals": [
+                {
+                    "Ref": "ADScenarioType"
+                },
+                "AWS_MANAGED_AD"
+            ]
+        },
+        "SQLLicenseProvided": {
+            "Fn::Equals": [
+                {
+                    "Ref": "BYOLAMI"
+                },
+                "false"
+            ]
+        },
+        "1GeneralTags": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfGeneralTags"
+                        },
+                        "1"
+                    ]
+                },
+                {
+                    "Condition": "2GeneralTags"
+                }
+            ]
+        },
+        "2GeneralTags": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfGeneralTags"
+                        },
+                        "2"
+                    ]
+                },
+                {
+                    "Condition": "3GeneralTags"
+                }
+            ]
+        },
+        "3GeneralTags": {
+            "Fn::Equals": [
+                {
+                    "Ref": "NumberOfGeneralTags"
+                },
+                "3"
+            ]
+        },
+        "RootDriveIsIo1": {
+            "Fn::Equals": [
+                {
+                    "Ref": "VolumeType"
+                },
+                "io1"
+            ]
+        },
+        "SingleNodeScenario": {
+            "Fn::Equals": [
+                {
+                    "Ref": "NumberOfNodes"
+                },
+                "1"
+            ]
+        },
+        "SingleNodeScenarioExistingVPC": {
+            "Fn::And": [
+                {
+                    "Condition": "SingleNodeScenario"
+                },
+                {
+                    "Condition": "ExistingVPC"
+                }
+            ]
+        },
+        "NotSingleNodeScenarioExistingVPC": {
+            "Fn::Not": [
+                {
+                    "Condition": "SingleNodeScenarioExistingVPC"
+                }
+            ]
+        },
+        "SQLHAScenario": {
+            "Fn::And": [
+                {
+                    "Fn::Not": [
+                    {
+                    "Condition": "SingleNodeScenario"
+                    }
+                ]
+                },
+                {
+                    "Fn::Not": [
+                    {
+                    "Condition": "SQLFCIScenario"
+                    }
+                ]
+                },
+                {
+                    "Fn::Not": [
+                    {
+                    "Condition": "SQLONTAPScenario"
+                    }
+                ]
+                }
+            ]
+        },
+        "EnableAppInsightForSQLHA": {
+            "Fn::And": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "EnableAppInsights"
+                        },
+                        "true"
+                    ]
+                },
+                {
+                    "Condition": "SQLHAScenario"
+                }
+            ]
+        },
+        "EnableAppInsightForSQLSingleNode": {
+            "Fn::And": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "EnableAppInsights"
+                        },
+                        "true"
+                    ]
+                },
+                {
+                    "Condition": "SingleNodeScenario"
+                }
+            ]
+        },
+        "EnableAppInsightForSQLServerFCI": {
+            "Fn::And": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "EnableAppInsights"
+                        },
+                        "true"
+                    ]
+                },
+                {
+                    "Condition": "SQLFCIScenario"
+                }
+            ]
+        },
+        "EnableAppInsightForSQLServerONTAP": {
+            "Fn::And": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "EnableAppInsights"
+                        },
+                            "true"
+                    ]
+                },
+                {
+                    "Condition": "SQLONTAPScenario"
+                }
+            ]
+        },
+        "IsThreeNodes": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfNodes"
+                        },
+                        "3"
+                    ]
+                },
+                {
+                    "Condition": "IsFourNodes"
+                }
+            ]
+        },
+        "IsFourNodes": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfNodes"
+                        },
+                        "4"
+                    ]
+                },
+                {
+                    "Condition": "IsFiveNodes"
+                }
+            ]
+        },
+        "IsFiveNodes": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfNodes"
+                        },
+                        "5"
+                    ]
+                },
+                {
+                    "Condition": "IsSixNodes"
+                }
+            ]
+        },
+        "IsSixNodes": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfNodes"
+                        },
+                        "6"
+                    ]
+                },
+                {
+                    "Condition": "IsSevenNodes"
+                }
+            ]
+        },
+        "IsSevenNodes": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfNodes"
+                        },
+                        "7"
+                    ]
+                },
+                {
+                    "Condition": "IsEightNodes"
+                }
+            ]
+        },
+        "IsEightNodes": {
+            "Fn::Equals": [
+                {
+                    "Ref": "NumberOfNodes"
+                },
+                "8"
+            ]
+        }
+    },
+    "Mappings": {
+        "AWSLaunchWizardTags": {
+            "SourceTag": {
+                "Key": "SourceTemplate",
+                "Value": "AWSLaunchWizard"
+            },
+            "ApplicationTypeTag": {
+                "Key": "LaunchWizardApplicationType",
+                "SAPValue": "SAP",
+                "SQLValue": "SQL_SERVER",
+                "ADValue": "ACTIVE_DIRECTORY",
+                "LINUXValue": "SQL_SERVER_LINUX"
+            }
+        }
+    },
+    "Resources": {
+        "VPCStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "NewVPC",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/aws-vpc.template"
+                },
+                "Parameters": {
+                    "VPCName": {
+                        "Ref": "VPCName"
+                    },
+                    "AvailabilityZones": {
+                        "Ref": "AvailabilityZones"
+                    },
+                    "KeyPairName": {
+                        "Ref": "KeyPairName"
+                    },
+                    "NumberOfSubnets": {
+                        "Ref": "NumberOfSubnets"
+                    },
+                    "PrivateSubnetCIDRs": {
+                        "Ref": "PrivateSubnetCIDRs"
+                    },
+                    "PublicSubnet1CIDR": {
+                        "Ref": "PublicSubnet1CIDR"
+                    },
+                    "VPCCIDR": {
+                        "Ref": "VPCCIDR"
+                    },
+                    "VPCTagPairs": {
+                        "Ref": "VPCTagPairs"
+                    },
+                    "NumberOfVPCTags": {
+                        "Ref": "NumberOfVPCTags"
+                    },
+                    "SubnetTagPairs": {
+                        "Ref": "SubnetTagPairs"
+                    },
+                    "NumberOfSubnetTags": {
+                        "Ref": "NumberOfSubnetTags"
+                    }
+                },
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "ADStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "NewAD",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/ad.template"
+                },
+                "Parameters": {
+                    "DomainAdminPasswordKey": {
+                        "Ref": "DomainAdminSecretName"
+                    },
+                    "DomainDNSName": {
+                        "Ref": "DomainDNSName"
+                    },
+                    "PrivateSubnet1CIDR": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "PrivateSubnetCIDRs"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "PrivateSubnet1ID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet1ID"
+                                ]
+                            },
+                            {
+                                "Fn::Select": [
+                                    "0",
+                                    {
+                                        "Fn::Split": [
+                                            ",",
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "PrivateSubnet2CIDR": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "PrivateSubnetCIDRs"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "PrivateSubnet2ID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet2ID"
+                                ]
+                            },
+                            {
+                                "Fn::Select": [
+                                    "1",
+                                    {
+                                        "Fn::Split": [
+                                            ",",
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "PublicSubnet1CIDR": {
+                        "Ref": "PublicSubnet1CIDR"
+                    },
+                    "AssetsBucketName": {
+                        "Ref": "AssetsBucketName"
+                    },
+                    "AssetsS3KeyPrefix": {
+                        "Ref": "AssetsS3KeyPrefix"
+                    },
+                    "VPCCIDR": {
+                        "Ref": "VPCCIDR"
+                    },
+                    "VPCID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCID"
+                            }
+                        ]
+                    }
+                },
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "DomainMemberSG": {
+            "Condition": "NotSingleNodeScenarioExistingVPC",
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Domain Members",
+                "VpcId": {
+                    "Fn::If": [
+                        "NewVPC",
+                        {
+                            "Fn::GetAtt": [
+                                "VPCStack",
+                                "Outputs.VPCID"
+                            ]
+                        },
+                        {
+                            "Ref": "VPCID"
+                        }
+                    ]
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "5985",
+                        "ToPort": "5985",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "53",
+                        "ToPort": "53",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "53",
+                        "ToPort": "53",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "49152",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "49152",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "5985",
+                        "ToPort": "5985",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "1",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "53",
+                        "ToPort": "53",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "1",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "53",
+                        "ToPort": "53",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "1",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "49152",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "1",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "49152",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "1",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "3389",
+                        "ToPort": "3389",
+                        "CidrIp": {
+                            "Ref": "PublicSubnet1CIDR"
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "DomainMemberSGSingleNode": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Condition": "SingleNodeScenarioExistingVPC",
+            "Properties": {
+                "GroupDescription": "Domain Members",
+                "VpcId": {
+                    "Fn::If": [
+                        "NewVPC",
+                        {
+                            "Fn::GetAtt": [
+                                "VPCStack",
+                                "Outputs.VPCID"
+                            ]
+                        },
+                        {
+                            "Ref": "VPCID"
+                        }
+                    ]
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "5985",
+                        "ToPort": "5985",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "53",
+                        "ToPort": "53",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "53",
+                        "ToPort": "53",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "49152",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "49152",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Fn::Select": [
+                                "0",
+                                {
+                                    "Fn::Split": [
+                                        ",",
+                                        {
+                                            "Ref": "PrivateSubnetCIDRs"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "RDGWStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "ShouldCreateRDGWNode",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/rdgw-domain.template"
+                },
+                "Parameters": {
+                    "ApplicationName": {
+                        "Ref": "ApplicationName"
+                    },
+                    "Ec2RoleName": {
+                        "Ref": "Ec2RoleName"
+                    },
+                    "UniqueID": {
+                        "Ref": "UniqueID"
+                    },
+                    "LogGroupName": {
+                        "Ref": "LogGroupName"
+                    },
+                    "EnableLogFeature": "true",
+                    "CreateNewAD": {
+                        "Ref": "CreateNewAD"
+                    },
+                    "ADServersPrivateIP": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::GetAtt": [
+                                    "ADStack",
+                                    "Outputs.DnsIpAddresses"
+                                ]
+                            },
+                            {
+                                "Ref": "ADServersPrivateIP"
+                            }
+                        ]
+                    },
+                    "DomainAdminPasswordKey": {
+                        "Ref": "DomainAdminSecretName"
+                    },
+                    "DomainAdminUser": {
+                        "Ref": "DomainAdminUser"
+                    },
+                    "DomainDNSName": {
+                        "Ref": "DomainDNSName"
+                    },
+                    "DomainMemberSGID": {
+                        "Fn::If": [
+                            "SingleNodeScenarioExistingVPC",
+                            {
+                                "Ref": "DomainMemberSGSingleNode"
+                            },
+                            {
+                                "Ref": "DomainMemberSG"
+                            }
+                        ]
+                    },
+                    "KeyPairName": {
+                        "Ref": "KeyPairName"
+                    },
+                    "WSFClusterName": {
+                        "Ref": "WSFClusterName"
+                    },
+                    "PublicSubnet1ID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PublicSubnet1ID"
+                                ]
+                            },
+                            {
+                                "Ref": "PublicSubnet1ID"
+                            }
+                        ]
+                    },
+                    "AssetsBucketName": {
+                        "Ref": "AssetsBucketName"
+                    },
+                    "AssetsS3RegionCode": {
+                        "Ref": "AssetsS3RegionCode"
+                    },
+                    "AssetsS3KeyPrefix": {
+                        "Ref": "AssetsS3KeyPrefix"
+                    },
+                    "RDGWInstanceType": {
+                        "Ref": "RDGWInstanceType"
+                    },
+                    "RDGWAccess": {
+                        "Ref": "RDGWAccess"
+                    },
+                    "RDGWName": {
+                        "Ref": "RDGWName"
+                    },
+                    "IsRDGWAccessUsingCIDR": {
+                        "Ref": "IsRDGWAccessUsingCIDR"
+                    },
+                    "VPCID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCID"
+                            }
+                        ]
+                    },
+                    "RDGWTagPairs": {
+                        "Ref": "RDGWTagPairs"
+                    },
+                    "NumberOfRDGWTags": {
+                        "Ref": "NumberOfRDGWTags"
+                    },
+                    "GeneralTagPairString": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "GeneralTagPairs"
+                            }
+                        ]
+                    },
+                    "VolumeTagPairString": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "VolumeTagPairs"
+                            }
+                        ]
+                    }
+                },
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "SQLStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "SQLHAScenario",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/sql.template"
+                },
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ],
+                "Parameters": {
+                    "UniqueID": {
+                        "Ref": "UniqueID"
+                    },
+                    "LogGroupName": {
+                        "Ref": "LogGroupName"
+                    },
+                    "EnableLogFeature": "true",
+                    "CreateNewAD": {
+                        "Ref": "CreateNewAD"
+                    },
+                    "Ec2RoleName": {
+                        "Ref": "Ec2RoleName"
+                    },
+                    "VPCCIDR": {
+                        "Ref": "VPCCIDR"
+                    },
+                    "ADServersPrivateIP": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::GetAtt": [
+                                    "ADStack",
+                                    "Outputs.DnsIpAddresses"
+                                ]
+                            },
+                            {
+                                "Ref": "ADServersPrivateIP"
+                            }
+                        ]
+                    },
+                    "WSFClusterName": {
+                        "Ref": "WSFClusterName"
+                    },
+                    "DomainAdminPasswordKey": {
+                        "Ref": "DomainAdminSecretName"
+                    },
+                    "DomainAdminUser": {
+                        "Ref": "DomainAdminUser"
+                    },
+                    "DomainDNSName": {
+                        "Ref": "DomainDNSName"
+                    },
+                    "DomainMemberSGID": {
+                        "Ref": "DomainMemberSG"
+                    },
+                    "KeyPairName": {
+                        "Ref": "KeyPairName"
+                    },
+                    "NumberOfSubnets": {
+                        "Ref": "NumberOfSubnets"
+                    },
+                    "NodeAccessTypes": {
+                        "Ref": "NodeAccessTypes"
+                    },
+                    "AvailabilityZones": {
+                        "Ref": "AvailabilityZones"
+                    },
+                    "PrivateSubnetAssignment": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnetAssignment"
+                                ]
+                            },
+                            {
+                                "Ref": "PrivateSubnetAssignment"
+                            }
+                        ]
+                    },
+                    "AssetsBucketName": {
+                        "Ref": "AssetsBucketName"
+                    },
+                    "AssetsS3RegionCode": {
+                        "Ref": "AssetsS3RegionCode"
+                    },
+                    "AssetsS3KeyPrefix": {
+                        "Ref": "AssetsS3KeyPrefix"
+                    },
+                    "SQLAMIID": {
+                        "Ref": "SQLAMIID"
+                    },
+                    "SQLServiceAccount": {
+                        "Ref": "SQLServiceAccount"
+                    },
+                    "SQLServiceAccountPasswordKey": {
+                        "Ref": "SQLServiceAccountSecret"
+                    },
+                    "VPCID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCID"
+                            }
+                        ]
+                    },
+                    "Volume1Size": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume1Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume1DeviceName": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DeviceNames"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume1DriveLetter": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveLetters"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume1DriveType": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveTypes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume2Size": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2DeviceName": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DeviceNames"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2DriveLetter": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveLetters"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2DriveType": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveTypes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume3Size": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3DeviceName": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DeviceNames"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3DriveLetter": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveLetters"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3DriveType": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveTypes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "VolumeIopsValues": {
+                        "Ref": "VolumeIopsValues"
+                    },
+                    "RootDriveSize": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "RootDriveType": {
+                        "Fn::If": [
+                            "RootDriveIsIo1",
+                            "io1",
+                            "gp2"
+                        ]
+                    },
+                    "NumberOfNodes": {
+                        "Ref": "NumberOfNodes"
+                    },
+                    "WSFCNodeInstanceType": {
+                        "Ref": "WSFCNodeInstanceType"
+                    },
+                    "NodeNetBIOSNames": {
+                        "Ref": "NodeNetBIOSNames"
+                    },
+                    "GeneralTagPairString": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "GeneralTagPairs"
+                            }
+                        ]
+                    },
+                    "SQLNodeTagPairs": {
+                        "Ref": "SQLNodeTagPairs"
+                    },
+                    "NumberOfSQLNodeTags": {
+                        "Ref": "NumberOfSQLNodeTags"
+                    },
+                    "VolumeTagPairs": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "VolumeTagPairs"
+                            }
+                        ]
+                    },
+                    "NumberOfVolumeTags": {
+                        "Ref": "NumberOfVolumeTags"
+                    },
+                    "SQLLicenseProvided": {
+                        "Fn::If": [
+                            "SQLLicenseProvided",
+                            "true",
+                            "false"
+                        ]
+                    },
+                    "VersionsRange": {
+                        "Ref": "VersionsRange"
+                    },
+                    "DHIDS": {
+                        "Ref": "DHIDS"
+                    },
+                    "HRGID": {
+                        "Ref": "HRGID"
+                    },
+                    "FSWParameters": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::Join": [
+                                    ",",
+                                    [
+                                        {
+                                            "Fn::Select": [
+                                                "0",
+                                                {
+                                                    "Fn::Split": [
+                                                        ",",
+                                                        {
+                                                            "Ref": "FSWParameters"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "Fn::GetAtt": [
+                                                "VPCStack",
+                                                "Outputs.PrivateSubnet1ID"
+                                            ]
+                                        },
+                                        {
+                                            "Fn::Select": [
+                                                "2",
+                                                {
+                                                    "Fn::Split": [
+                                                        ",",
+                                                        {
+                                                            "Ref": "FSWParameters"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "Ref": "FSWParameters"
+                            }
+                        ]
+                    },
+                    "AGName": {
+                        "Ref": "AGName"
+                    },
+                    "DatabaseName": {
+                        "Ref": "DatabaseName"
+                    },
+                    "SubnetMasks": {
+                        "Ref": "SubnetMasks"
+                    },
+                    "AGListenerName": {
+                        "Ref": "AGListenerName"
+                    },
+                    "TempDBonInstanceStore": {
+                        "Ref": "TempDBonInstanceStore"
+                    }
+                }
+            }
+        },
+        "SQLSingleNodeStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "SingleNodeScenario",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/sql-windows-single-node.template"
+                },
+                "Tags": [
+                    {
+                        "Fn::If": [
+                            "1GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "2GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "2",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "3",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "3GeneralTags",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "4",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "5",
+                                        {
+                                            "Ref": "GeneralTagPairs"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ],
+                "Parameters": {
+                    "UniqueID": {
+                        "Ref": "UniqueID"
+                    },
+                    "LogGroupName": {
+                        "Ref": "LogGroupName"
+                    },
+                    "EnableLogFeature": "true",
+                    "CreateNewAD": {
+                        "Ref": "CreateNewAD"
+                    },
+                    "Ec2RoleName": {
+                        "Ref": "Ec2RoleName"
+                    },
+                    "VPCCIDR": {
+                        "Ref": "VPCCIDR"
+                    },
+                    "ADServersPrivateIP": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::GetAtt": [
+                                    "ADStack",
+                                    "Outputs.DnsIpAddresses"
+                                ]
+                            },
+                            {
+                                "Ref": "ADServersPrivateIP"
+                            }
+                        ]
+                    },
+                    "DomainAdminPasswordKey": {
+                        "Ref": "DomainAdminSecretName"
+                    },
+                    "DomainAdminUser": {
+                        "Ref": "DomainAdminUser"
+                    },
+                    "DomainDNSName": {
+                        "Ref": "DomainDNSName"
+                    },
+                    "DomainMemberSGID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Ref": "DomainMemberSG"
+                            },
+                            {
+                                "Ref": "DomainMemberSGSingleNode"
+                            }
+                        ]
+                    },
+                    "KeyPairName": {
+                        "Ref": "KeyPairName"
+                    },
+                    "AvailabilityZone": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "AvailabilityZones"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "PrivateSubnetAssignment": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Fn::If": [
+                                            "NewVPC",
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "VPCStack",
+                                                    "Outputs.PrivateSubnetAssignment"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "AssetsBucketName": {
+                        "Ref": "AssetsBucketName"
+                    },
+                    "AssetsS3RegionCode": {
+                        "Ref": "AssetsS3RegionCode"
+                    },
+                    "AssetsS3KeyPrefix": {
+                        "Ref": "AssetsS3KeyPrefix"
+                    },
+                    "SQLAMIID": {
+                        "Ref": "SQLAMIID"
+                    },
+                    "SQLServiceAccount": {
+                        "Ref": "SQLServiceAccount"
+                    },
+                    "SQLServiceAccountPasswordKey": {
+                        "Ref": "SQLServiceAccountSecret"
+                    },
+                    "VPCID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCID"
+                            }
+                        ]
+                    },
+                    "Volume1Size": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume1Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume1DeviceName": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DeviceNames"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume1DriveLetter": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveLetters"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume1DriveType": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveTypes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume2Size": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2DeviceName": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DeviceNames"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2DriveLetter": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveLetters"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume2DriveType": {
+                        "Fn::Select": [
+                            "2",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveTypes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume3Size": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3DeviceName": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DeviceNames"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3DriveLetter": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveLetters"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Volume3DriveType": {
+                        "Fn::Select": [
+                            "3",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "DriveTypes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "VolumeIopsValues": {
+                        "Ref": "VolumeIopsValues"
+                    },
+                    "RootDriveSize": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "VolumeSizes"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "RootDriveType": {
+                        "Fn::If": [
+                            "RootDriveIsIo1",
+                            "io1",
+                            "gp2"
+                        ]
+                    },
+                    "NodeInstanceType": {
+                        "Ref": "WSFCNodeInstanceType"
+                    },
+                    "NodeNetBIOSName": {
+                        "Ref": "NodeNetBIOSNames"
+                    },
+                    "GeneralTagPairString": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "GeneralTagPairs"
+                            }
+                        ]
+                    },
+                    "SQLNodeTagPairs": {
+                        "Ref": "SQLNodeTagPairs"
+                    },
+                    "NumberOfSQLNodeTags": {
+                        "Ref": "NumberOfSQLNodeTags"
+                    },
+                    "VolumeTagPairs": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "VolumeTagPairs"
+                            }
+                        ]
+                    },
+                    "NumberOfVolumeTags": {
+                        "Ref": "NumberOfVolumeTags"
+                    },
+                    "SQLLicenseProvided": {
+                        "Fn::If": [
+                            "SQLLicenseProvided",
+                            "true",
+                            "false"
+                        ]
+                    },
+                    "VersionsRange": {
+                        "Ref": "VersionsRange"
+                    },
+                    "DHIDS": {
+                        "Ref": "DHIDS"
+                    },
+                    "HRGID": {
+                        "Ref": "HRGID"
+                    },
+                    "TempDBonInstanceStore": {
+                        "Ref": "TempDBonInstanceStore"
+                    }
+                }
+            }
+        },
+        "SQLServerFCIStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "SQLFCIScenario",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/sql-windows-fci.template"
+                },
+                "Parameters": {
+                    "UniqueID": {
+                        "Ref": "UniqueID"
+                    },
+                    "LogGroupName": {
+                        "Ref": "LogGroupName"
+                    },
+                    "EnableLogFeature": "true",
+                    "CreateNewAD": {
+                        "Ref": "CreateNewAD"
+                    },
+                    "Ec2RoleName": {
+                        "Ref": "Ec2RoleName"
+                    },
+                    "ADDnsIpAddresses": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::Select": [
+                                    "0",
+                                    {
+                                        "Fn::Split": [
+                                            ",",
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "ADStack",
+                                                    "Outputs.DnsIpAddresses"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Select": [
+                                    "0",
+                                    {
+                                        "Fn::Split": [
+                                            ",",
+                                            {
+                                                "Ref": "ADServersPrivateIP"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "ManagedADDirectoryId": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::GetAtt": [
+                                    "ADStack",
+                                    "Outputs.DirectoryId"
+                                ]
+                            },
+                            {
+                                "Ref": "MADDirectoryID"
+                            }
+                        ]
+                    },
+                    "DomainAdminSecretName": {
+                        "Ref": "DomainAdminSecretName"
+                    },
+                    "DomainAdminUser": {
+                        "Ref": "DomainAdminUser"
+                    },
+                    "DomainDNSName": {
+                        "Ref": "DomainDNSName"
+                    },
+                    "DomainMemberSGID": {
+                        "Ref": "FSXDomainMemberSGID"
+                    },
+                    "KeyPairName": {
+                        "Ref": "KeyPairName"
+                    },
+                    "PrivateSubnet1ID": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Fn::If": [
+                                            "NewVPC",
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "VPCStack",
+                                                    "Outputs.PrivateSubnetAssignment"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "PrivateSubnet2ID": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Fn::If": [
+                                            "NewVPC",
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "VPCStack",
+                                                    "Outputs.PrivateSubnetAssignment"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "AssetsBucketName": {
+                        "Ref": "AssetsBucketName"
+                    },
+                    "AssetsS3RegionCode": {
+                        "Ref": "AssetsS3RegionCode"
+                    },
+                    "AssetsS3KeyPrefix": {
+                        "Ref": "AssetsS3KeyPrefix"
+                    },
+                    "MSSQLMediaBucketName": {
+                        "Ref": "MSSQLMediaBucketName"
+                    },
+                    "MSSQLMediaPathKey": {
+                        "Ref": "MSSQLMediaPathKey"
+                    },
+                    "AMIID": {
+                        "Ref": "SQLAMIID"
+                    },
+                    "BYOLAMI": {
+                        "Ref": "BYOLAMI"
+                    },
+                    "SqlFSxWSFCName": {
+                        "Ref": "WSFClusterName"
+                    },
+                    "SqlFSxFCIName": {
+                        "Ref": "SqlFSxFCIName"
+                    },
+                    "FileShareVolumeSize": {
+                        "Ref": "FileShareVolumeSize"
+                    },
+                    "FileShareThroughputCapacity": {
+                        "Ref": "FileShareThroughputCapacity"
+                    },
+                    "SQLAdminAccounts": {
+                        "Ref": "SQLServiceAccount"
+                    },
+                    "SQLServiceAccountSecret": {
+                        "Ref": "SQLServiceAccountSecret"
+                    },
+                    "VPCID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCID"
+                            }
+                        ]
+                    },
+                    "VPCCIDR": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCCIDR"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCCIDR"
+                            }
+                        ]
+                    },
+                    "WorkloadInstanceType": {
+                        "Ref": "WSFCNodeInstanceType"
+                    },
+                    "SqlFSxServerNetBIOSName1": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "NodeNetBIOSNames"
+                                    }
+
+                                ]
+                            }
+                        ]
+                    },
+                    "SqlFSxServerNetBIOSName2": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "NodeNetBIOSNames"
+                                    }
+
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "Tags": [
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                    "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                    "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "SQLServerONTAPStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Condition": "SQLONTAPScenario",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Sub": "https://${AssetsBucketName}.${AssetsS3RegionCode}.${AWS::URLSuffix}/${AssetsS3KeyPrefix}sql/templates/sql-windows-fci-ontap.template"
+                },
+                "Parameters": {
+                    "UniqueID": {
+                        "Ref": "UniqueID"
+                    },
+                    "LogGroupName": {
+                        "Ref": "LogGroupName"
+                    },
+                    "EnableLogFeature": "true",
+                    "CreateNewAD": {
+                        "Ref": "CreateNewAD"
+                    },
+                    "Ec2RoleName": {
+                        "Ref": "Ec2RoleName"
+                    },
+                    "ADDnsIpAddresses": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::Select": [
+                                    "0",
+                                    {
+                                        "Fn::Split": [
+                                            ",",
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "ADStack",
+                                                    "Outputs.DnsIpAddresses"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Select": [
+                                    "0",
+                                    {
+                                        "Fn::Split": [
+                                            ",",
+                                            {
+                                                "Ref": "ADServersPrivateIP"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "ManagedADDirectoryId": {
+                        "Fn::If": [
+                            "NewAD",
+                            {
+                                "Fn::GetAtt": [
+                                    "ADStack",
+                                    "Outputs.DirectoryId"
+                                ]
+                            },
+                            {
+                                "Ref": "MADDirectoryID"
+                            }
+                        ]
+                    },
+                    "DomainAdminSecretName": {
+                        "Ref": "DomainAdminSecretName"
+                    },
+                    "DomainAdminUser": {
+                        "Ref": "DomainAdminUser"
+                    },
+                    "DomainDNSName": {
+                        "Ref": "DomainDNSName"
+                    },
+                    "DomainMemberSGID": {
+                        "Ref": "FSXDomainMemberSGID"
+                    },
+                    "KeyPairName": {
+                        "Ref": "KeyPairName"
+                    },
+                    "PrivateSubnet1ID": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Fn::If": [
+                                            "NewVPC",
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "VPCStack",
+                                                    "Outputs.PrivateSubnetAssignment"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "RouteTable1Id": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet1RouteTable"
+                                ]
+                            },
+                            {
+                                "Ref": "PrivateSubnet1RouteTable"
+                            }
+                        ]
+                    },
+                    "RouteTable2Id": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet2RouteTable"
+                                ]
+                            },
+                            {
+                                "Ref": "PrivateSubnet2RouteTable"
+                            }
+                        ]
+                    },
+                    "PrivateSubnet2ID": {
+                        "Fn::Select": [
+                                "1",
+                            {
+                                "Fn::Split": [
+                                        ",",
+                                    {
+                                        "Fn::If": [
+                                                "NewVPC",
+                                            {
+                                                "Fn::GetAtt": [
+                                                        "VPCStack",
+                                                        "Outputs.PrivateSubnetAssignment"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "PrivateSubnetIDs"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "AssetsBucketName": {
+                        "Ref": "AssetsBucketName"
+                    },
+                    "SqlDataLunSize": {
+                        "Ref": "SqlDataLunSize"
+                    },
+                    "SqlLogLunSize": {
+                        "Ref": "SqlLogLunSize"
+                    },
+                    "VolumeStorage": {
+                        "Ref": "VolumeStorage"
+                    },
+                    "AssetsS3RegionCode": {
+                        "Ref": "AssetsS3RegionCode"
+                    },
+                    "AssetsS3KeyPrefix": {
+                        "Ref": "AssetsS3KeyPrefix"
+                    },
+                    "MSSQLMediaBucketName": {
+                        "Ref": "MSSQLMediaBucketName"
+                    },
+                    "MSSQLMediaPathKey": {
+                        "Ref": "MSSQLMediaPathKey"
+                    },
+                    "AMIID": {
+                        "Ref": "SQLAMIID"
+                    },
+                    "BYOLAMI": {
+                        "Ref": "BYOLAMI"
+                    },
+                    "SqlFSxWSFCName": {
+                        "Ref": "WSFClusterName"
+                    },
+                    "SqlFSxFCIName": {
+                        "Ref": "SqlFSxFCIName"
+                    },
+                    "FileShareVolumeSize": {
+                        "Ref": "FileShareVolumeSize"
+                    },
+                    "FileShareThroughputCapacity": {
+                        "Ref": "FileShareThroughputCapacity"
+                    },
+                    "SQLAdminAccounts": {
+                        "Ref": "SQLServiceAccount"
+                    },
+                    "SQLServiceAccountSecret": {
+                        "Ref": "SQLServiceAccountSecret"
+                    },
+                    "VPCID": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCID"
+                            }
+                        ]
+                    },
+                    "VPCCIDR": {
+                        "Fn::If": [
+                            "NewVPC",
+                            {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCCIDR"
+                                ]
+                            },
+                            {
+                                "Ref": "VPCCIDR"
+                            }
+                        ]
+                    },
+                    "WorkloadInstanceType": {
+                        "Ref": "WSFCNodeInstanceType"
+                    },
+                    "SqlFSxServerNetBIOSName1": {
+                        "Fn::Select": [
+                            "0",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "NodeNetBIOSNames"
+                                    }
+
+                                ]
+                            }
+                        ]
+                    },
+                    "SqlFSxServerNetBIOSName2": {
+                        "Fn::Select": [
+                            "1",
+                            {
+                                "Fn::Split": [
+                                    ",",
+                                    {
+                                        "Ref": "NodeNetBIOSNames"
+                                    }
+
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "Tags": [
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                    "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                    "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "AppInsightsForSQLHA": {
+            "Condition": "EnableAppInsightForSQLHA",
+            "DependsOn": "SQLStack",
+            "Type": "AWS::ApplicationInsights::Application",
+            "Properties": {
+                "ResourceGroupName": {
+                    "Ref": "ResourceGroupName"
+                },
+                "AutoConfigurationEnabled": false,
+                "CustomComponents": [
+                    {
+                        "ComponentName" : {
+                            "Fn::Sub": "SQLHAClusterInstances-${ApplicationName}"
+                        },
+                        "ResourceList" : [
+                            {
+                                "Fn::GetAtt": [
+                                    "SQLStack",
+                                    "Outputs.WSFCNode1ARN"
+                                ]
+                            },
+                            {
+                                "Fn::GetAtt": [
+                                    "SQLStack",
+                                    "Outputs.WSFCNode2ARN"
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "IsThreeNodes",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "SQLStack",
+                                            "Outputs.WSFCNode3ARN"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "IsFourNodes",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "SQLStack",
+                                            "Outputs.WSFCNode4ARN"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "IsFiveNodes",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "SQLStack",
+                                            "Outputs.WSFCNode5ARN"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "IsSixNodes",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "SQLStack",
+                                            "Outputs.WSFCNode6ARN"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "IsSevenNodes",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "SQLStack",
+                                            "Outputs.WSFCNode7ARN"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "IsEightNodes",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "SQLStack",
+                                            "Outputs.WSFCNode8ARN"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "ComponentMonitoringSettings": [
+                    {
+                        "ComponentName": {
+                            "Fn::Sub": "SQLHAClusterInstances-${ApplicationName}"
+                        },
+                        "Tier": "SQL_SERVER_ALWAYSON_AVAILABILITY_GROUP",
+                        "ComponentConfigurationMode": "DEFAULT_WITH_OVERWRITE",
+                        "DefaultOverwriteComponentConfiguration": {
+                            "SubComponentTypeConfigurations": [
+                                {
+                                    "SubComponentType": "AWS::EC2::Instance",
+                                    "SubComponentConfigurationDetails": {
+                                        "Logs": [
+                                            {
+                                                "LogGroupName": {
+                                                    "Fn::Sub": "SQL_SERVER-${ResourceGroupName}"
+                                                },
+                                                "LogType": "SQL_SERVER",
+                                                "LogPath": "C:\\Program Files\\Microsoft SQL Server\\MSSQL**.MSSQLSERVER\\MSSQL\\Log\\ERRORLOG"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "AppInsightsForSQLSingleNode": {
+            "Condition": "EnableAppInsightForSQLSingleNode",
+            "DependsOn": "SQLSingleNodeStack",
+            "Type": "AWS::ApplicationInsights::Application",
+            "Properties": {
+                "ResourceGroupName": {
+                    "Ref": "ResourceGroupName"
+                },
+                "AutoConfigurationEnabled": true,
+                "Tags": [
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                    "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                    "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        },
+        "AppInsightsForSQLServerFCI": {
+            "Condition": "EnableAppInsightForSQLServerFCI",
+            "DependsOn": "SQLServerFCIStack",
+            "Type": "AWS::ApplicationInsights::Application",
+            "Properties": {
+                "ResourceGroupName": {
+                    "Ref": "ResourceGroupName"
+                },
+                "AutoConfigurationEnabled": true,
+                "Tags": [
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "SourceTag", "Value"]}
+                    },
+                    {
+                        "Key": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "Key"]},
+                        "Value": {"Fn::FindInMap": ["AWSLaunchWizardTags", "ApplicationTypeTag", "SQLValue"]}
+                    }
+                ]
+            }
+        }
+    }
+}
