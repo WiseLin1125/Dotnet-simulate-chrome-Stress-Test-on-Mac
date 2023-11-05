@@ -1,0 +1,1145 @@
+Get-EventLog -LogName System -EntryType Error, Warning | Format-List
+
+
+Index              : 135675
+EntryType          : Error
+InstanceId         : 10028
+Message            : The description for Event ID '10028' in Source 'DCOM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:'NXP17-P.ec-0001237-0003.wbi.nxp.com', '     e34',
+                     'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', '{8BC3F05E-D86B-11D0-A075-00C04FB68820}'
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {NXP17-P.ec-0001237-0003.wbi.nxp.com,      e34, C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe, {8BC3F05E-D86B-11D0-A075-00C04FB68820}}
+Source             : DCOM
+TimeGenerated      : 11/5/2023 9:00:56 AM
+TimeWritten        : 11/5/2023 9:00:56 AM
+UserName           : NXP17-P\ssm-user
+
+Index              : 135661
+EntryType          : Error
+InstanceId         : 81
+Message            : LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 16939/474/8500 602:0:53456:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 16939/474/8500 602:0:53456:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+                     }
+Source             : Microsoft-Windows-FailoverClustering-Client
+TimeGenerated      : 11/5/2023 7:25:31 AM
+TimeWritten        : 11/5/2023 7:25:31 AM
+UserName           : NXP17-P\ssm-user
+
+Index              : 135659
+EntryType          : Error
+InstanceId         : 81
+Message            : LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7804/474/20971 602:0:52048:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7804/474/20971 602:0:52048:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+                     }
+Source             : Microsoft-Windows-FailoverClustering-Client
+TimeGenerated      : 11/5/2023 7:17:22 AM
+TimeWritten        : 11/5/2023 7:17:22 AM
+UserName           : NXP17-P\ssm-user
+
+Index              : 135658
+EntryType          : Error
+InstanceId         : 81
+Message            : LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7800/474/22027 602:0:50512:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7800/474/22027 602:0:50512:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+                     }
+Source             : Microsoft-Windows-FailoverClustering-Client
+TimeGenerated      : 11/5/2023 7:17:22 AM
+TimeWritten        : 11/5/2023 7:17:22 AM
+UserName           : NXP17-P\ssm-user
+
+Index              : 135657
+EntryType          : Error
+InstanceId         : 81
+Message            : LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7797/474/15146 602:0:52048:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7797/474/15146 602:0:52048:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+                     }
+Source             : Microsoft-Windows-FailoverClustering-Client
+TimeGenerated      : 11/5/2023 7:17:22 AM
+TimeWritten        : 11/5/2023 7:17:22 AM
+UserName           : NXP17-P\ssm-user
+
+Index              : 135656
+EntryType          : Error
+InstanceId         : 81
+Message            : LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7785/474/12313 602:0:46608:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 2916
+                     System time is: 7785/474/12313 602:0:46608:52490
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: NXP17-P
+                     Long val: -1182943054
+                     Long val: 382312662
+                     }
+Source             : Microsoft-Windows-FailoverClustering-Client
+TimeGenerated      : 11/5/2023 7:17:21 AM
+TimeWritten        : 11/5/2023 7:17:21 AM
+UserName           : NXP17-P\ssm-user
+
+Index              : 135590
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/5/2023 6:27:24 AM
+TimeWritten        : 11/5/2023 6:27:24 AM
+UserName           :
+
+Index              : 135586
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/5/2023 6:27:22 AM
+TimeWritten        : 11/5/2023 6:27:22 AM
+UserName           :
+
+Index              : 135585
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/5/2023 6:27:22 AM
+TimeWritten        : 11/5/2023 6:27:22 AM
+UserName           :
+
+Index              : 135521
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/5/2023 6:27:20 AM
+TimeWritten        : 11/5/2023 6:27:20 AM
+UserName           :
+
+Index              : 135419
+EntryType          : Warning
+InstanceId         : 8020
+Message            : The system failed to register host (A or AAAA) resource records (RRs) for network adapter
+                     with settings:
+
+
+                               Adapter Name : {1AA05476-BEC6-49B9-A2BF-24840F85F1C9}
+
+                               Host Name : nxp17-p
+
+                               Primary Domain Suffix : wbi.nxp.com
+
+                               DNS server list :
+
+                                        10.52.82.2
+
+                               Sent update to server : <?>
+
+                               IP Address(es) :
+
+                                 10.52.82.96
+
+                     The reason the system could not register these RRs during the update request was because of a system problem. You can manually retry DNS registration of the network
+                     adapter and its settings by typing 'ipconfig /registerdns' at the command prompt. If problems still persist, contact your DNS server or network systems administrator.
+                     See event details for specific error code information.
+Category           : (1028)
+CategoryNumber     : 1028
+ReplacementStrings : {{1AA05476-BEC6-49B9-A2BF-24840F85F1C9}, nxp17-p, wbi.nxp.com,     10.52.82.2...}
+Source             : Microsoft-Windows-DNS-Client
+TimeGenerated      : 11/5/2023 6:26:25 AM
+TimeWritten        : 11/5/2023 6:26:25 AM
+UserName           : NT AUTHORITY\NETWORK SERVICE
+
+Index              : 135418
+EntryType          : Warning
+InstanceId         : 8020
+Message            : The system failed to register host (A or AAAA) resource records (RRs) for network adapter
+                     with settings:
+
+
+                               Adapter Name : {1AA05476-BEC6-49B9-A2BF-24840F85F1C9}
+
+                               Host Name : nxp17-p
+
+                               Primary Domain Suffix : wbi.nxp.com
+
+                               DNS server list :
+
+                                        10.52.82.2
+
+                               Sent update to server : <?>
+
+                               IP Address(es) :
+
+                                 10.52.82.96
+
+                     The reason the system could not register these RRs during the update request was because of a system problem. You can manually retry DNS registration of the network
+                     adapter and its settings by typing 'ipconfig /registerdns' at the command prompt. If problems still persist, contact your DNS server or network systems administrator.
+                     See event details for specific error code information.
+Category           : (1028)
+CategoryNumber     : 1028
+ReplacementStrings : {{1AA05476-BEC6-49B9-A2BF-24840F85F1C9}, nxp17-p, wbi.nxp.com,     10.52.82.2...}
+Source             : Microsoft-Windows-DNS-Client
+TimeGenerated      : 11/5/2023 6:26:25 AM
+TimeWritten        : 11/5/2023 6:26:25 AM
+UserName           : NT AUTHORITY\NETWORK SERVICE
+
+Index              : 135410
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/5/2023 6:26:23 AM
+TimeWritten        : 11/5/2023 6:26:23 AM
+UserName           :
+
+Index              : 135393
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/5/2023 6:26:21 AM
+TimeWritten        : 11/5/2023 6:26:21 AM
+UserName           :
+
+Index              : 135392
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/5/2023 6:26:21 AM
+TimeWritten        : 11/5/2023 6:26:21 AM
+UserName           :
+
+Index              : 135325
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/5/2023 6:26:19 AM
+TimeWritten        : 11/5/2023 6:26:19 AM
+UserName           :
+
+Index              : 135321
+EntryType          : Warning
+InstanceId         : 468906
+Message            : The description for Event ID '468906' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:'WSMAN/nxp17-p.wbi.nxp.com', 'WSMAN/nxp17-p',
+                     '1355'
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {WSMAN/nxp17-p.wbi.nxp.com, WSMAN/nxp17-p, 1355}
+Source             : WinRM
+TimeGenerated      : 11/5/2023 6:26:20 AM
+TimeWritten        : 11/5/2023 6:26:20 AM
+UserName           :
+
+Index              : 135319
+EntryType          : Error
+InstanceId         : 3221226536
+Message            : The RD Session Host server cannot install a new template-based certificate to be used for Transport Layer Security (TLS) 1.0\Secure Sockets Layer (SSL) authentication
+                     and encryption. The following error occured: The specified domain either does not exist or could not be contacted.
+                     .
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {The specified domain either does not exist or could not be contacted.
+                     }
+Source             : TermService
+TimeGenerated      : 11/5/2023 6:26:19 AM
+TimeWritten        : 11/5/2023 6:26:19 AM
+UserName           :
+
+Index              : 135293
+EntryType          : Error
+InstanceId         : 5719
+Message            : This computer was not able to set up a secure session with a domain
+                     controller in domain WBI due to the following:
+                     %We can't sign you in with this credential because your domain isn't available. Make sure your device is connected to your organization's network and try again. If
+                     you previously signed in on this device with another credential, you can sign in with that credential.
+
+                     This may lead to authentication problems. Make sure that this
+                     computer is connected to the network. If the problem persists,
+                     please contact your domain administrator.
+
+
+
+                     ADDITIONAL INFO
+
+                     If this computer is a domain controller for the specified domain, it
+                     sets up the secure session to the primary domain controller emulator in the specified
+                     domain. Otherwise, this computer sets up the secure session to any domain controller
+                     in the specified domain.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {WBI, %%1311}
+Source             : NETLOGON
+TimeGenerated      : 11/5/2023 6:26:19 AM
+TimeWritten        : 11/5/2023 6:26:19 AM
+UserName           :
+
+Index              : 135209
+EntryType          : Warning
+InstanceId         : 108
+Message            : Status 0x00001069 determining that device interface \\?\{8e7bd593-6e6c-4c52-86a6-77175494dd8e}#MsVhdHba#1&3030e83&0&01#{2accfe60-c130-11d2-b082-00a0c91efb8b} does not
+                     support iSCSI WMI interfaces. If this device is not an iSCSI HBA then this error can be ignored.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {0x00001069, \\?\{8e7bd593-6e6c-4c52-86a6-77175494dd8e}#MsVhdHba#1&3030e83&0&01#{2accfe60-c130-11d2-b082-00a0c91efb8b}}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 2:48:08 PM
+TimeWritten        : 11/4/2023 2:48:08 PM
+UserName           :
+
+Index              : 135172
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 2:46:11 PM
+TimeWritten        : 11/4/2023 2:46:11 PM
+UserName           :
+
+Index              : 135170
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 2:46:09 PM
+TimeWritten        : 11/4/2023 2:46:09 PM
+UserName           :
+
+Index              : 135169
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 2:46:09 PM
+TimeWritten        : 11/4/2023 2:46:09 PM
+UserName           :
+
+Index              : 135105
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/4/2023 2:46:07 PM
+TimeWritten        : 11/4/2023 2:46:07 PM
+UserName           :
+
+Index              : 135025
+EntryType          : Warning
+InstanceId         : 468901
+Message            : The description for Event ID '468901' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 2:45:55 PM
+TimeWritten        : 11/4/2023 2:45:55 PM
+UserName           :
+
+Index              : 135013
+EntryType          : Warning
+InstanceId         : 8020
+Message            : The system failed to register host (A or AAAA) resource records (RRs) for network adapter
+                     with settings:
+
+
+                               Adapter Name : {1AA05476-BEC6-49B9-A2BF-24840F85F1C9}
+
+                               Host Name : nxp17-p
+
+                               Primary Domain Suffix : wbi.nxp.com
+
+                               DNS server list :
+
+                                        10.52.82.2
+
+                               Sent update to server : <?>
+
+                               IP Address(es) :
+
+                                 10.52.82.96
+
+                     The reason the system could not register these RRs during the update request was because of a system problem. You can manually retry DNS registration of the network
+                     adapter and its settings by typing 'ipconfig /registerdns' at the command prompt. If problems still persist, contact your DNS server or network systems administrator.
+                     See event details for specific error code information.
+Category           : (1028)
+CategoryNumber     : 1028
+ReplacementStrings : {{1AA05476-BEC6-49B9-A2BF-24840F85F1C9}, nxp17-p, wbi.nxp.com,     10.52.82.2...}
+Source             : Microsoft-Windows-DNS-Client
+TimeGenerated      : 11/4/2023 2:45:14 PM
+TimeWritten        : 11/4/2023 2:45:14 PM
+UserName           : NT AUTHORITY\NETWORK SERVICE
+
+Index              : 135012
+EntryType          : Warning
+InstanceId         : 8020
+Message            : The system failed to register host (A or AAAA) resource records (RRs) for network adapter
+                     with settings:
+
+
+                               Adapter Name : {1AA05476-BEC6-49B9-A2BF-24840F85F1C9}
+
+                               Host Name : nxp17-p
+
+                               Primary Domain Suffix : wbi.nxp.com
+
+                               DNS server list :
+
+                                        10.52.82.2
+
+                               Sent update to server : <?>
+
+                               IP Address(es) :
+
+                                 10.52.82.96
+
+                     The reason the system could not register these RRs during the update request was because of a system problem. You can manually retry DNS registration of the network
+                     adapter and its settings by typing 'ipconfig /registerdns' at the command prompt. If problems still persist, contact your DNS server or network systems administrator.
+                     See event details for specific error code information.
+Category           : (1028)
+CategoryNumber     : 1028
+ReplacementStrings : {{1AA05476-BEC6-49B9-A2BF-24840F85F1C9}, nxp17-p, wbi.nxp.com,     10.52.82.2...}
+Source             : Microsoft-Windows-DNS-Client
+TimeGenerated      : 11/4/2023 2:45:14 PM
+TimeWritten        : 11/4/2023 2:45:14 PM
+UserName           : NT AUTHORITY\NETWORK SERVICE
+
+Index              : 135004
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 2:45:12 PM
+TimeWritten        : 11/4/2023 2:45:12 PM
+UserName           :
+
+Index              : 134987
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 2:45:10 PM
+TimeWritten        : 11/4/2023 2:45:10 PM
+UserName           :
+
+Index              : 134986
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 2:45:10 PM
+TimeWritten        : 11/4/2023 2:45:10 PM
+UserName           :
+
+Index              : 134922
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/4/2023 2:45:08 PM
+TimeWritten        : 11/4/2023 2:45:08 PM
+UserName           :
+
+Index              : 134911
+EntryType          : Warning
+InstanceId         : 468906
+Message            : The description for Event ID '468906' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:'WSMAN/nxp17-p.wbi.nxp.com', 'WSMAN/nxp17-p',
+                     '1355'
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {WSMAN/nxp17-p.wbi.nxp.com, WSMAN/nxp17-p, 1355}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 2:45:08 PM
+TimeWritten        : 11/4/2023 2:45:08 PM
+UserName           :
+
+Index              : 134909
+EntryType          : Error
+InstanceId         : 3221226536
+Message            : The RD Session Host server cannot install a new template-based certificate to be used for Transport Layer Security (TLS) 1.0\Secure Sockets Layer (SSL) authentication
+                     and encryption. The following error occured: The specified domain either does not exist or could not be contacted.
+                     .
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {The specified domain either does not exist or could not be contacted.
+                     }
+Source             : TermService
+TimeGenerated      : 11/4/2023 2:45:08 PM
+TimeWritten        : 11/4/2023 2:45:08 PM
+UserName           :
+
+Index              : 134887
+EntryType          : Error
+InstanceId         : 5719
+Message            : This computer was not able to set up a secure session with a domain
+                     controller in domain WBI due to the following:
+                     %We can't sign you in with this credential because your domain isn't available. Make sure your device is connected to your organization's network and try again. If
+                     you previously signed in on this device with another credential, you can sign in with that credential.
+
+                     This may lead to authentication problems. Make sure that this
+                     computer is connected to the network. If the problem persists,
+                     please contact your domain administrator.
+
+
+
+                     ADDITIONAL INFO
+
+                     If this computer is a domain controller for the specified domain, it
+                     sets up the secure session to the primary domain controller emulator in the specified
+                     domain. Otherwise, this computer sets up the secure session to any domain controller
+                     in the specified domain.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {WBI, %%1311}
+Source             : NETLOGON
+TimeGenerated      : 11/4/2023 2:45:08 PM
+TimeWritten        : 11/4/2023 2:45:08 PM
+UserName           :
+
+Index              : 134794
+EntryType          : Warning
+InstanceId         : 24
+Message            : Time Provider NtpClient: No valid response has been received from domain controller ec-0001237-0004.wbi.nxp.com after 8 attempts to contact it. This domain controller
+                     will be discarded as a time source and NtpClient will attempt to discover a new domain controller from which to synchronize. The error was: The peer is unreachable.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {ec-0001237-0004.wbi.nxp.com, The peer is unreachable. }
+Source             : Microsoft-Windows-Time-Service
+TimeGenerated      : 11/4/2023 4:00:54 AM
+TimeWritten        : 11/4/2023 4:00:54 AM
+UserName           : NT AUTHORITY\LOCAL SERVICE
+
+Index              : 134789
+EntryType          : Warning
+InstanceId         : 6038
+Message            : Microsoft Windows Server has detected that NTLM authentication is presently being used between clients and this server. This event occurs once per boot of the server
+                     on the first time a client uses NTLM with this server.
+
+                     NTLM is a weaker authentication mechanism. Please check:
+
+                           Which applications are using NTLM authentication?
+                           Are there configuration issues preventing the use of stronger authentication such as Kerberos authentication?
+                           If NTLM must be supported, is Extended Protection configured?
+
+                     Details on how to complete these checks can be found at http://go.microsoft.com/fwlink/?LinkId=225699.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : LsaSrv
+TimeGenerated      : 11/4/2023 3:59:32 AM
+TimeWritten        : 11/4/2023 3:59:32 AM
+UserName           :
+
+Index              : 134788
+EntryType          : Error
+InstanceId         : 81
+Message            : LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 3876
+                     System time is: 19867/474/31531 527:0:11840:17023
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: nxp17-p.wbi.nxp.com
+                     Long val: -1182943054
+                     Long val: 382312662
+
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {LogExtendedErrorInformation (974): Extended RPC error information:
+                     ProcessID is 3876
+                     System time is: 19867/474/31531 527:0:11840:17023
+                     Generating component is 2
+                     Status is 1753
+                     Detection location is 501
+                     Flags is 0
+                     NumberOfParameters is 4
+                     Unicode string: ncacn_ip_tcp
+                     Unicode string: nxp17-p.wbi.nxp.com
+                     Long val: -1182943054
+                     Long val: 382312662
+                     }
+Source             : Microsoft-Windows-FailoverClustering-Client
+TimeGenerated      : 11/4/2023 3:59:26 AM
+TimeWritten        : 11/4/2023 3:59:26 AM
+UserName           : NT AUTHORITY\SYSTEM
+
+Index              : 134758
+EntryType          : Warning
+InstanceId         : 1085
+Message            : Windows failed to apply the Group Policy Registry settings. Group Policy Registry settings might have its own log file. Please click on the "More information" link.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {1, 5079, 1, 31312...}
+Source             : Microsoft-Windows-GroupPolicy
+TimeGenerated      : 11/4/2023 3:57:34 AM
+TimeWritten        : 11/4/2023 3:57:34 AM
+UserName           : NT AUTHORITY\SYSTEM
+
+Index              : 134757
+EntryType          : Warning
+InstanceId         : 1085
+Message            : Windows failed to apply the Group Policy Local Users and Groups settings. Group Policy Local Users and Groups settings might have its own log file. Please click on
+                     the "More information" link.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {1, 5079, 1, 29656...}
+Source             : Microsoft-Windows-GroupPolicy
+TimeGenerated      : 11/4/2023 3:57:32 AM
+TimeWritten        : 11/4/2023 3:57:32 AM
+UserName           : NT AUTHORITY\SYSTEM
+
+Index              : 134755
+EntryType          : Warning
+InstanceId         : 3221226539
+Message            : The RD Session Host server cannot register 'TERMSRV' Service Principal Name to be used for server authentication. The following error occured: Directory object not
+                     found.
+                     .
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {Directory object not found.
+                     }
+Source             : TermService
+TimeGenerated      : 11/4/2023 3:57:13 AM
+TimeWritten        : 11/4/2023 3:57:13 AM
+UserName           :
+
+Index              : 134750
+EntryType          : Warning
+InstanceId         : 468906
+Message            : The description for Event ID '468906' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:'WSMAN/nxp17-p.wbi.nxp.com', 'WSMAN/nxp17-p', '87'
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {WSMAN/nxp17-p.wbi.nxp.com, WSMAN/nxp17-p, 87}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 3:57:03 AM
+TimeWritten        : 11/4/2023 3:57:03 AM
+UserName           :
+
+Index              : 134749
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 3:57:02 AM
+TimeWritten        : 11/4/2023 3:57:02 AM
+UserName           :
+
+Index              : 134726
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:57:00 AM
+TimeWritten        : 11/4/2023 3:57:00 AM
+UserName           :
+
+Index              : 134725
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:57:00 AM
+TimeWritten        : 11/4/2023 3:57:00 AM
+UserName           :
+
+Index              : 134658
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/4/2023 3:56:58 AM
+TimeWritten        : 11/4/2023 3:56:58 AM
+UserName           :
+
+Index              : 134564
+EntryType          : Warning
+InstanceId         : 3221226539
+Message            : The RD Session Host server cannot register 'TERMSRV' Service Principal Name to be used for server authentication. The following error occured: Directory object not
+                     found.
+                     .
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {Directory object not found.
+                     }
+Source             : TermService
+TimeGenerated      : 11/4/2023 3:55:25 AM
+TimeWritten        : 11/4/2023 3:55:25 AM
+UserName           :
+
+Index              : 134549
+EntryType          : Warning
+InstanceId         : 1085
+Message            : Windows failed to apply the Group Policy Registry settings. Group Policy Registry settings might have its own log file. Please click on the "More information" link.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {1, 5079, 1, 48578...}
+Source             : Microsoft-Windows-GroupPolicy
+TimeGenerated      : 11/4/2023 3:54:57 AM
+TimeWritten        : 11/4/2023 3:54:57 AM
+UserName           : NT AUTHORITY\SYSTEM
+
+Index              : 134545
+EntryType          : Warning
+InstanceId         : 1085
+Message            : Windows failed to apply the Group Policy Local Users and Groups settings. Group Policy Local Users and Groups settings might have its own log file. Please click on
+                     the "More information" link.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {1, 5079, 1, 35359...}
+Source             : Microsoft-Windows-GroupPolicy
+TimeGenerated      : 11/4/2023 3:54:44 AM
+TimeWritten        : 11/4/2023 3:54:44 AM
+UserName           : NT AUTHORITY\SYSTEM
+
+Index              : 134541
+EntryType          : Warning
+InstanceId         : 3221226539
+Message            : The RD Session Host server cannot register 'TERMSRV' Service Principal Name to be used for server authentication. The following error occured: Directory object not
+                     found.
+                     .
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {Directory object not found.
+                     }
+Source             : TermService
+TimeGenerated      : 11/4/2023 3:54:13 AM
+TimeWritten        : 11/4/2023 3:54:13 AM
+UserName           :
+
+Index              : 134539
+EntryType          : Warning
+InstanceId         : 468906
+Message            : The description for Event ID '468906' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:'WSMAN/nxp17-p.wbi.nxp.com', 'WSMAN/nxp17-p', '87'
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {WSMAN/nxp17-p.wbi.nxp.com, WSMAN/nxp17-p, 87}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 3:54:09 AM
+TimeWritten        : 11/4/2023 3:54:09 AM
+UserName           :
+
+Index              : 134517
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 3:54:08 AM
+TimeWritten        : 11/4/2023 3:54:08 AM
+UserName           :
+
+Index              : 134515
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:54:06 AM
+TimeWritten        : 11/4/2023 3:54:06 AM
+UserName           :
+
+Index              : 134514
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:54:06 AM
+TimeWritten        : 11/4/2023 3:54:06 AM
+UserName           :
+
+Index              : 134448
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/4/2023 3:54:04 AM
+TimeWritten        : 11/4/2023 3:54:04 AM
+UserName           :
+
+Index              : 134368
+EntryType          : Warning
+InstanceId         : 468901
+Message            : The description for Event ID '468901' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 3:53:52 AM
+TimeWritten        : 11/4/2023 3:53:52 AM
+UserName           :
+
+Index              : 134335
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 3:52:36 AM
+TimeWritten        : 11/4/2023 3:52:36 AM
+UserName           :
+
+Index              : 134333
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:52:35 AM
+TimeWritten        : 11/4/2023 3:52:35 AM
+UserName           :
+
+Index              : 134332
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:52:35 AM
+TimeWritten        : 11/4/2023 3:52:35 AM
+UserName           :
+
+Index              : 134267
+EntryType          : Error
+InstanceId         : 3221225477
+Message            : Failed to setup initiator portal. Error status is given in the dump data.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {\Device\RaidPort2}
+Source             : iScsiPrt
+TimeGenerated      : 11/4/2023 3:52:33 AM
+TimeWritten        : 11/4/2023 3:52:33 AM
+UserName           :
+
+Index              : 134185
+EntryType          : Warning
+InstanceId         : 468901
+Message            : The description for Event ID '468901' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 3:52:21 AM
+TimeWritten        : 11/4/2023 3:52:21 AM
+UserName           :
+
+Index              : 134127
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:48:29 AM
+TimeWritten        : 11/4/2023 3:48:29 AM
+UserName           :
+
+Index              : 134126
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:48:29 AM
+TimeWritten        : 11/4/2023 3:48:29 AM
+UserName           :
+
+Index              : 134125
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 3:48:28 AM
+TimeWritten        : 11/4/2023 3:48:28 AM
+UserName           :
+
+Index              : 133952
+EntryType          : Warning
+InstanceId         : 121
+Message            : The firewall exception to allow Internet Storage Name Server (iSNS) client functionality is not enabled. iSNS client functionality is not available.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : MSiSCSI
+TimeGenerated      : 11/4/2023 3:43:39 AM
+TimeWritten        : 11/4/2023 3:43:39 AM
+UserName           :
+
+Index              : 133937
+EntryType          : Error
+InstanceId         : 3221232472
+Message            : The AmazonCloudWatchAgent service failed to start due to the following error:
+                     %%1053
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {AmazonCloudWatchAgent, %%1053}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:41:51 AM
+TimeWritten        : 11/4/2023 3:41:51 AM
+UserName           :
+
+Index              : 133936
+EntryType          : Error
+InstanceId         : 3221232481
+Message            : A timeout was reached (30000 milliseconds) while waiting for the AmazonCloudWatchAgent service to connect.
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {30000, AmazonCloudWatchAgent}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 3:41:51 AM
+TimeWritten        : 11/4/2023 3:41:51 AM
+UserName           :
+
+Index              : 133794
+EntryType          : Warning
+InstanceId         : 468901
+Message            : The description for Event ID '468901' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 3:41:38 AM
+TimeWritten        : 11/4/2023 3:41:38 AM
+UserName           :
+
+Index              : 133423
+EntryType          : Warning
+InstanceId         : 468901
+Message            : The description for Event ID '468901' in Source 'WinRM' cannot be found.  The local computer may not have the necessary registry information or message DLL files to
+                     display the message, or you may not have permission to access them.  The following information is part of the event:
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {}
+Source             : WinRM
+TimeGenerated      : 11/4/2023 1:32:12 AM
+TimeWritten        : 11/4/2023 1:32:12 AM
+UserName           :
+
+Index              : 133369
+EntryType          : Error
+InstanceId         : 3221232495
+Message            : The IP Helper service terminated with the following error:
+                     %%21
+Category           : (0)
+CategoryNumber     : 0
+ReplacementStrings : {IP Helper, %%21}
+Source             : Service Control Manager
+TimeGenerated      : 11/4/2023 1:31:10 AM
+TimeWritten        : 11/4/2023 1:31:10 AM
+UserName           :
